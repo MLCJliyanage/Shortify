@@ -1,7 +1,7 @@
 param keyVaultName string
 param principalIds array
 param principalType string = 'ServicePrincipal'
-param roleDefinitionId string = '8b184520-b371-468d-a82e-882d081cc55b'
+param roleDefinitionId string = '4633458b-17de-408a-b874-0445c86b69e6'
 
 resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
   name: keyVaultName

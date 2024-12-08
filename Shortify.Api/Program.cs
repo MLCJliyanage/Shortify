@@ -1,5 +1,11 @@
 var builder = WebApplication.CreateBuilder(args);
 
+var keyVaultName = builder.Configuration["keyVaultName"];
+builder.Configuration.AddAzureKeyVault(
+	new Uri($"https://{keyVaultName}.vault.azure.net"),
+
+	)
+
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

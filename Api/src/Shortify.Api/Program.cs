@@ -1,3 +1,6 @@
+using Api.src.Shortify.Api;
+using Azure.Identity;
+
 var builder = WebApplication.CreateBuilder(args);
 
 var keyVaultName = builder.Configuration["keyVaultName"];

@@ -47,7 +47,7 @@ app.MapGet("/weatherforecast", () =>
 
 app.Run();
 
-namespace Api.Shortify.Api
+namespace Api.src.Shortify.Api
 {
 	record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 	{

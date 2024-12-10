@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shortify.Api", "Api\src\Sho
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shortify.Api.Core.Tests", "Api\tests\Shortify.Api.Core.Tests\Shortify.Api.Core.Tests.csproj", "{DB582295-321C-48CF-8478-A87FAB0822A6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shortify.Core", "Api\src\Shortify.Core\Shortify.Core.csproj", "{22E9D0C1-7DCA-4279-A87A-4266EDA1DBD7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{DB582295-321C-48CF-8478-A87FAB0822A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB582295-321C-48CF-8478-A87FAB0822A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB582295-321C-48CF-8478-A87FAB0822A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22E9D0C1-7DCA-4279-A87A-4266EDA1DBD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22E9D0C1-7DCA-4279-A87A-4266EDA1DBD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22E9D0C1-7DCA-4279-A87A-4266EDA1DBD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22E9D0C1-7DCA-4279-A87A-4266EDA1DBD7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

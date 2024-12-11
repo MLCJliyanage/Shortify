@@ -8,7 +8,7 @@ namespace Shortify.Api.Core.Tests
 		[InlineData(1, "1")]
 		[InlineData(0, "0")]
 		[InlineData(20, "K")]
-		public void Should_encode_number_to_base62(int number, string expectedNumber)
+		public void Should_encode_number_to_base62(long number, string expectedNumber)
 		{
 			number.EncodeToBase62()
 				.Should()

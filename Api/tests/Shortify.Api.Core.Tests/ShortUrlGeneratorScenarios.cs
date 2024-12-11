@@ -4,6 +4,11 @@ namespace Shortify.Api.Core.Tests;
 
 public class ShortUrlGeneratorScenarios
 {
+	//TEST LIST
+	// Check if the end of range is gt than start
+	// Unique tokens
+	// Accept multiple changes
+	
 	[Fact]
 	public void Should_return_short_url_for_10001()
 	{

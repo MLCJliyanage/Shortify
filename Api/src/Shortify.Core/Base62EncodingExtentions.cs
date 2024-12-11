@@ -3,7 +3,7 @@ namespace Shortify.Core;
 public static class Base62EncodingExtentions
 {
 	private const string Alphanumeric = "0123456789" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "abcdefghijklmnopqrstuvwxyz";
-	public static string EncodeToBase62(this int number)
+	public static string EncodeToBase62(this long number)
 	{
 		if(number == 0) return Alphanumeric[0].ToString();
 

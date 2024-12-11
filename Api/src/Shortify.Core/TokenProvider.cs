@@ -2,14 +2,19 @@
 
 public class TokenProvider
 {
-	private int _start;
-	public void AssignRange(int start, int i1)
+	private TokenRange _tokenRange;
+	public void AssignRange(long start, long end)
 	{
-		_start = start;
+		_tokenRange = new TokenRange(start, end);
 	}
 
-	public int GetToken()
+	public void AssignRange(TokenRange tokenRange)
 	{
-		return _start;
+		_tokenRange = tokenRange;
+	}
+
+	public long GetToken()
+	{
+		return _tokenRange.Start;
 	}
 }

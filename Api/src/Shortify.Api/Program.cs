@@ -1,5 +1,7 @@
 using Api.src.Shortify.Api;
 using Azure.Identity;
+using Shortify.Api.Extensions;
+using Shortify.Core.Urls.Add;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,8 @@ if (!string.IsNullOrEmpty(keyVaultName))
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSingleton(TimeProvider.System);
+builder.Services.AddUrlFeature();
 
 var app = builder.Build();
 
@@ -28,24 +32,24 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
+app.MapPost("/api/urls", async (
+	AddUrlHandler handler,
+	AddUrlRequest request,
+	CancellationToken cancellationToken) =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+	var requestedWithUser = request with
+	{
+		CreatedBy = "Cj070@gmail.com"
+	};
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+	var result = await handler.HandleAsync(requestedWithUser, cancellationToken);
+
+	if (!result.Succeeded)
+	{
+		return Results.BadRequest(result.Error);
+	}
+
+	return Results.Created($"/api/urls/{result.Value!.ShortUrl}", result.Value);
+});
 
 app.Run();

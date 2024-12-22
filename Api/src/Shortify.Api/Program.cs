@@ -1,7 +1,7 @@
-using Api.src.Shortify.Api;
 using Azure.Identity;
 using Shortify.Api.Extensions;
 using Shortify.Core.Urls.Add;
+using Shortify.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +19,9 @@ if (!string.IsNullOrEmpty(keyVaultName))
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton(TimeProvider.System);
-builder.Services.AddUrlFeature();
+builder.Services
+	.AddUrlFeature()
+	.AddCosmosUrlDataStore(builder.Configuration);
 
 var app = builder.Build();
 

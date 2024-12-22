@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Shortify.Core\Shortify.Core.csproj" />
+    <ProjectReference Include="..\Shortify.Infrastructure\Shortify.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

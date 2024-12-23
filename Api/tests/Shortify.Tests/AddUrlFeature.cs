@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using FluentAssertions;
+using Shortify.Api.Core.Tests.Urls;
 using Shortify.Core.Urls.Add;
 
 namespace Shortify.Tests

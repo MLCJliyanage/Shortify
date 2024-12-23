@@ -3,7 +3,7 @@ using Shortify.Api.Core.Tests.TestDoubles;
 using Shortify.Core;
 using Shortify.Core.Urls.Add;
 
-namespace Shortify.Api.Core.Tests;
+namespace Shortify.Api.Core.Tests.Urls;
 
 public class AddUrlScenarios
 {

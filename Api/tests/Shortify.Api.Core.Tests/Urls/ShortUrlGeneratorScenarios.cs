@@ -1,6 +1,6 @@
 ﻿using Shortify.Core;
 
-namespace Shortify.Api.Core.Tests;
+namespace Shortify.Api.Core.Tests.Urls;
 
 public class ShortUrlGeneratorScenarios
 {

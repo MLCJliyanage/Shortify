@@ -8,7 +8,7 @@ using Shortify.Core.Urls;
 using Shortify.Core.Urls.Add;
 using Shortify.Tests.Extensions;
 
-namespace Shortify.Tests;
+namespace Shortify.Api.Core.Tests.Urls;
 
 public class ApiFixture : WebApplicationFactory<IApiAssemblyMarker>
 {

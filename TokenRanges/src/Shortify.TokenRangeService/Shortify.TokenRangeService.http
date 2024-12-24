@@ -1,0 +1,6 @@
+@Shortify.TokenRangeService_HostAddress = http://localhost:5167
+
+GET {{Shortify.TokenRangeService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

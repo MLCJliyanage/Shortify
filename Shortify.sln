@@ -13,6 +13,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shortify.Tests", "Api\tests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shortify.Infrastructure", "Api\src\Shortify.Infrastructure\Shortify.Infrastructure.csproj", "{5CAF1116-2970-405D-95E4-8E01FA71C0BA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TokenRanges", "TokenRanges", "{92C2F9F5-72C3-44C0-8550-65AD563AD30E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{06B5C9D8-B7AD-41AF-A949-A37E0752289E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shortify.TokenRangeService", "TokenRanges\src\Shortify.TokenRangeService\Shortify.TokenRangeService.csproj", "{2F468F3C-4D9F-489B-8C42-9161AEE908E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,11 +45,19 @@ Global
 		{5CAF1116-2970-405D-95E4-8E01FA71C0BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5CAF1116-2970-405D-95E4-8E01FA71C0BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5CAF1116-2970-405D-95E4-8E01FA71C0BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F468F3C-4D9F-489B-8C42-9161AEE908E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F468F3C-4D9F-489B-8C42-9161AEE908E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F468F3C-4D9F-489B-8C42-9161AEE908E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F468F3C-4D9F-489B-8C42-9161AEE908E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1D28E290-CE6C-4A42-A4DD-0D53479CBC94}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{06B5C9D8-B7AD-41AF-A949-A37E0752289E} = {92C2F9F5-72C3-44C0-8550-65AD563AD30E}
+		{2F468F3C-4D9F-489B-8C42-9161AEE908E7} = {06B5C9D8-B7AD-41AF-A949-A37E0752289E}
 	EndGlobalSection
 EndGlobal

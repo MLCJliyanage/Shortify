@@ -6,7 +6,8 @@ name: .NET
 on:
   push:
     branches: ["main"]
-
+    paths:
+      - Api/**
 jobs:
   build:
     runs-on: ubuntu-latest

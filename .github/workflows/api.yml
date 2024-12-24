@@ -8,6 +8,8 @@ on:
     branches: ["main"]
     paths:
       - Api/**
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest

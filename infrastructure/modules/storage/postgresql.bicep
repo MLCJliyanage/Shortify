@@ -5,7 +5,7 @@ param administratorLogin string
 param administratorLoginPassword string
 param keyVaultName string
 
-resource postgresqlServer 'Microsoft.DBforPostgreSQL/flexibleServers@2024-08-01' = {
+resource postgresqlServer 'Microsoft.DBforPostgreSQL/flexibleServers@2024-03-01-preview' = {
   name: name
   location: location
   sku: {

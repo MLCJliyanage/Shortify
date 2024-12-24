@@ -1,6 +1,8 @@
 param location string = resourceGroup().location
 
 var uniqueId = uniqueString(resourceGroup().id)
+@secure()
+param pgSqlPassword string
 
 module keyVault 'modules/secrets/keyvault.bicep' = {
   name: 'keyVaultDeployment'
@@ -27,6 +29,17 @@ module apiService 'modules/compute/appservice.bicep' = {
         value: 'items'
       }
     ]
+  }
+}
+
+module postgres 'modules//storage/postgresql.bicep' = {
+  name: 'postgresDeployment'
+  params: {
+    name: 'postgresql-${uniqueString(resourceGroup().id)}'
+    location: location
+    administratorLogin: 'adminuser'
+    administratorLoginPassword: pgSqlPassword
+    keyVaultName: keyVault.outputs.name
   }
 }
 

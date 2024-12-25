@@ -39,6 +39,7 @@ jobs:
     environment: Development
 
     steps:
+      - uses: actions/checkout@v4
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:

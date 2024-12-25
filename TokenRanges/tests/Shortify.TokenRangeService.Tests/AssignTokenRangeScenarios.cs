@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Json;
+﻿using System.Collections.Concurrent;
+using System.Net.Http.Json;
 using FluentAssertions;
 
 namespace Shortify.TokenRangeService.Tests;
@@ -45,6 +46,28 @@ public class AssignTokenRangeScenarios: IClassFixture<Fixture>
             .ReadFromJsonAsync<TokenRangeResponse>();
 
         tokenRange2.Start.Should().BeGreaterThan(tokenRange1.End);
+    }
+
+    [Fact]
+    public async Task Should_not_repeat_range_on_multiple_requests()
+    {
+        ConcurrentBag<TokenRangeResponse> ranges = [];
+        await Parallel.ForEachAsync(Enumerable.Range(1, 100), async (number, cancellationToken) =>
+        {
+            var response = await _client
+                .PostAsJsonAsync("/assign", 
+                    new AssignTokenRangeRequest(number.ToString()), 
+                    cancellationToken);
+            if (response.IsSuccessStatusCode)
+            {
+                var range = await response.Content
+                    .ReadFromJsonAsync<TokenRangeResponse>(cancellationToken: cancellationToken);
+                ranges.Add(range!);
+            }
+        });
+        
+        ranges.Should().OnlyHaveUniqueItems(x => x.Start);
+        ranges.Should().OnlyHaveUniqueItems(x => x.End);
     }
 }
 

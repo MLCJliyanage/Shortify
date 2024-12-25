@@ -8,7 +8,7 @@ namespace Shortify.TokenRangeService.Tests;
 public class Fixture : WebApplicationFactory<ITokenRangeAssemblyMarker>, IAsyncLifetime
 {
     private readonly PostgreSqlContainer _postgresSqlContainer;
-    public string ConnectionString => _postgresSqlContainer.GetConnectionString();
+    private string ConnectionString => _postgresSqlContainer.GetConnectionString();
 
     public Fixture()
     {

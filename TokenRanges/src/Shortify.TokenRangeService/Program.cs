@@ -1,6 +1,16 @@
+using Azure.Identity;
 using Shortify.TokenRangeService;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var keyVaultName = builder.Configuration["keyVaultName"];
+if (!string.IsNullOrEmpty(keyVaultName))
+{
+    builder.Configuration.AddAzureKeyVault(
+        new Uri($"https://{keyVaultName}.vault.azure.net"),
+        new DefaultAzureCredential()
+    );
+}
 
 builder.Services.AddSingleton(
     new TokenRangeManager(builder.Configuration["Postgres:ConnectionString"]!));
@@ -18,7 +28,3 @@ app.MapPost("/assign", async (AssignTokenRangeRequest request, TokenRangeManager
 });
 
 app.Run();
-
-public record AssignTokenRangeRequest(string Key);
-public record TokenRangeResponse(long Start, long End);
-

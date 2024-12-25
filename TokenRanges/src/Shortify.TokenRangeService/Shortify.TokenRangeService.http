@@ -1,6 +1,10 @@
-@Shortify.TokenRangeService_HostAddress = http://localhost:5167
+@Shortify.TokenRangeService_HostAddress = https://token-range-service-efrmql6nan6de.azurewebsites.net
 
-GET {{Shortify.TokenRangeService_HostAddress}}/weatherforecast/
+POST {{Shortify.TokenRangeService_HostAddress}}/assign/
 Accept: application/json
+Content-Type: application/json
 
+{
+  "Key": "A1234"
+}
 ###

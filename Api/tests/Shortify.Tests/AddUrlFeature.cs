@@ -6,16 +6,20 @@ using Shortify.Core.Urls.Add;
 
 namespace Shortify.Tests
 {
-	public class AddUrlFeature(ApiFixture fixture) : IClassFixture<ApiFixture>
+	public class AddUrlFeature : IClassFixture<ApiFixture>
 	{
-		private readonly HttpClient _client = fixture.CreateClient();
+		private readonly HttpClient _client;
+
+		public AddUrlFeature(ApiFixture fixture)
+		{
+			_client = fixture.CreateClient();
+		}
 
 		[Fact]
-		public async Task Given_long_url_should_return_short_url()
+		public async Task Given_long_url_Should_return_short_url()
 		{
-			var response = await _client.PostAsJsonAsync<AddUrlRequest>("/api/urls",
-				new AddUrlRequest(new Uri("https://stackoverflow.com/questions/27465851/how-should-i-handle-very-very-long-url"),
-					"cj@gmail.com"));
+			var response = await _client.PostAsJsonAsync("/api/urls",
+				new AddUrlRequest(new Uri("https://dometrain.com"), ""));
 
 			response.StatusCode.Should().Be(HttpStatusCode.Created);
 			var addUrlResponse = await response.Content.ReadFromJsonAsync<AddUrlResponse>();

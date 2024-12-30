@@ -1,10 +1,10 @@
 @Shortify.TokenRangeService_HostAddress = https://token-range-service-efrmql6nan6de.azurewebsites.net
 
-POST {{Shortify.TokenRangeService_HostAddress}}/assign/
+POST https://token-range-service-efrmql6nan6de.azurewebsites.net/assign
 Accept: application/json
 Content-Type: application/json
 
 {
-  "Key": "A1234"
+  "key": "A1234"
 }
 ###

@@ -1,4 +1,5 @@
 using Azure.Identity;
+using Shortify.Api;
 using Shortify.Api.Extensions;
 using Shortify.Core.Urls.Add;
 using Shortify.Infrastructure.Extensions;
@@ -18,10 +19,21 @@ if (!string.IsNullOrEmpty(keyVaultName))
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton(TimeProvider.System);
+builder.Services
+	.AddSingleton(TimeProvider.System)
+	.AddSingleton<IEnvironmentManager, EnvironmentManager>();
 builder.Services
 	.AddUrlFeature()
 	.AddCosmosUrlDataStore(builder.Configuration);
+
+builder.Services.AddHttpClient("TokenRangeService",
+	client =>
+	{
+		client.BaseAddress = new Uri(builder.Configuration["TokenRangeService:Endpoint"]!);
+	});
+
+builder.Services.AddSingleton<ITokenRangeApiClient, TokenRangeApiClient>();
+builder.Services.AddHostedService<TokenManager>();
 
 var app = builder.Build();
 

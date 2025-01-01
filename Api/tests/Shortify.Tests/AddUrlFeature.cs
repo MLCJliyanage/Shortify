@@ -1,4 +1,5 @@
 using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using FluentAssertions;
 using Shortify.Api.Core.Tests.Urls;
@@ -13,6 +14,8 @@ namespace Shortify.Tests
 		public AddUrlFeature(ApiFixture fixture)
 		{
 			_client = fixture.CreateClient();
+			_client.DefaultRequestHeaders.Authorization =
+				new AuthenticationHeaderValue("TestScheme");
 		}
 
 		[Fact]

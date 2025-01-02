@@ -12,7 +12,7 @@ using Microsoft.Extensions.Options;
 using Shortify.Api;
 using Shortify.Core.Urls;
 using Shortify.Core.Urls.Add;
-using Shortify.Tests.Extensions;
+using Shortify.Libraries.Testing.Extensions;
 using Shortify.Tests.TestDoubles;
 
 namespace Shortify.Api.Core.Tests.Urls;

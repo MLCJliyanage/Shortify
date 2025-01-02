@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Shortify.Tests.Extensions;
+namespace Shortify.Libraries.Testing.Extensions;
 
 public static class ServiceCollectionExtensions
 {

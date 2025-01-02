@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Libraries\Shortify.Libraries.Testing\Shortify.Libraries.Testing.csproj" />
     <ProjectReference Include="..\..\src\Shortify.Api\Shortify.Api.csproj" />
   </ItemGroup>
 

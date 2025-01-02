@@ -23,8 +23,8 @@ public class AssignTokenRangeScenarios: IClassFixture<Fixture>
        var tokenRange = await requestResponse.Content
            .ReadFromJsonAsync<TokenRangeResponse>();
 
-       tokenRange.Start.Should().BeGreaterThan(0);
-       tokenRange.End.Should().BeGreaterThan(tokenRange.Start);
+       tokenRange?.Start.Should().BeGreaterThan(0);
+       tokenRange?.End.Should().BeGreaterThan(tokenRange.Start);
     }
     
     [Fact]
@@ -45,7 +45,7 @@ public class AssignTokenRangeScenarios: IClassFixture<Fixture>
         var tokenRange2 = await requestResponse2.Content
             .ReadFromJsonAsync<TokenRangeResponse>();
 
-        tokenRange2.Start.Should().BeGreaterThan(tokenRange1.End);
+        tokenRange2?.Start.Should().BeGreaterThan(tokenRange1!.End);
     }
 
     [Fact]

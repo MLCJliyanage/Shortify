@@ -1,4 +1,5 @@
 ﻿using Microsoft.Azure.Cosmos;
+using StackExchange.Redis;
 
 namespace Shortify.RedirectApi.Infrastructure;
 
@@ -12,14 +13,18 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<CosmosClient>(s => 
             new CosmosClient(connectionString: cosmosConnectionString));
         
+        services.AddSingleton<IConnectionMultiplexer>(s => 
+            ConnectionMultiplexer.Connect(redisConnectionString));
         
         services.AddSingleton<IShortenedUrlReader>(s =>
         {
             var cosmosClient = s.GetRequiredService<CosmosClient>();
             var container = cosmosClient.GetContainer(databaseName, containerName);
-
-            return
-                new CosmosShortenedUrlReader(container);
+            var redisConnectionMultiplexer = s.GetRequiredService<IConnectionMultiplexer>();
+            
+            return new RedisUrlReader(
+                new CosmosShortenedUrlReader(container),
+                redisConnectionMultiplexer);
         });
 
         return services;

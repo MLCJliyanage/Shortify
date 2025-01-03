@@ -5,12 +5,21 @@ using Microsoft.Extensions.DependencyInjection;
 using Shortify.Libraries.Testing.Extensions;
 using Shortify.RedirectApi.Infrastructure;
 using Shortify.RedirectApi.Tests.TestDoubles;
+using StackExchange.Redis;
+using Testcontainers.Redis;
 
 namespace Shortify.RedirectApi.Tests;
 
-public class ApiFixture : WebApplicationFactory<IRedirectApiAssemblyMarker>
+public class ApiFixture : WebApplicationFactory<IRedirectApiAssemblyMarker>, IAsyncLifetime
 {
+    private readonly RedisContainer _redisContainer = new RedisBuilder().Build();
+    public string RedisConnectionString => _redisContainer.GetConnectionString();
     public InMemoryShortenedUrlReader ShortenedUrlReader { get; } = new();
+    
+    public Task InitializeAsync()
+    {
+        return _redisContainer.StartAsync();
+    }
     
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -18,9 +27,17 @@ public class ApiFixture : WebApplicationFactory<IRedirectApiAssemblyMarker>
             services =>
             {
                 services.Remove<IShortenedUrlReader>();
-                services.AddSingleton<IShortenedUrlReader>(ShortenedUrlReader);
+                services.AddSingleton<IShortenedUrlReader>(
+                    new RedisUrlReader(ShortenedUrlReader,
+                        ConnectionMultiplexer.Connect(RedisConnectionString))
+                );
 
             });
         base.ConfigureWebHost(builder);
+    }
+    
+    public Task DisposeAsync()
+    {
+        return _redisContainer.StopAsync();
     }
 }

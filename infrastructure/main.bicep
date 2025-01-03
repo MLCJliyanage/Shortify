@@ -128,3 +128,12 @@ module entraApp 'modules/identity/entra-app.bicep' = {
     applicationName: 'web-${uniqueId}'
   }
 }
+
+module redisCache 'modules/storage/redis-cache.bicep' = {
+  name: 'redisCacheDeployment'
+  params: {
+    name: 'redis-cache-${uniqueId}'
+    location: location
+    keyVaultName: keyVaultName
+  }
+}

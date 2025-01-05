@@ -5,7 +5,7 @@ on:
     branches: ["main"]
     paths:
       - CosmosDbTrigger/**
-  workflow_dispatch: # manual trigger
+  workflow_dispatch:
 
 env:
   AZURE_FUNCTIONAPP_PACKAGE_PATH: "CosmosDbTrigger/src/Shortify.CosmosDbtriggerFunction"
@@ -19,17 +19,33 @@ jobs:
       - name: "Checkout GitHub Action"
         uses: actions/checkout@v3
 
+      - name: "Debug Directory Structure"
+        shell: bash
+        run: |
+          echo "Current directory:"
+          pwd
+          echo "\nRoot directory contents:"
+          ls -la
+          echo "\nCosmosDbTrigger directory contents (if exists):"
+          ls -la CosmosDbTrigger || echo "CosmosDbTrigger directory not found"
+
       - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: "Resolve Project Dependencies Using Dotnet"
+      - name: "Build Function App"
         shell: bash
         run: |
-          pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+          if [ ! -d "${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}" ]; then
+            echo "Error: Directory ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }} not found"
+            echo "Available directories:"
+            find . -type d -maxdepth 3
+            exit 1
+          fi
+
+          cd "${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}"
           dotnet build --configuration Release --output ./output
-          popd
 
       - name: "Run Azure Functions Action"
         uses: Azure/functions-action@v1

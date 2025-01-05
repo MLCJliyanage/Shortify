@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 
-namespace Shortify.CosmosDbTriggerFunction
+namespace Shortify.CosmosDbtriggerFunction
 {
     public class ShortUrlPropagation
     {

@@ -8,7 +8,7 @@ on:
   workflow_dispatch: # manual trigger
 
 env:
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: "CosmosDbTrigger/src/Shortify.CosmosDbTriggerFunction"
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: "CosmosDbTrigger/src/Shortify.CosmosDbtriggerFunction"
   DOTNET_VERSION: "8.0.x"
 
 jobs:

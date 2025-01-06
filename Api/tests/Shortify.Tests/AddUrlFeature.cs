@@ -7,7 +7,8 @@ using Shortify.Core.Urls.Add;
 
 namespace Shortify.Tests
 {
-	public class AddUrlFeature : IClassFixture<ApiFixture>
+	[Collection("Api collection")]
+	public class AddUrlFeature
 	{
 		private readonly HttpClient _client;
 

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Shortify.Core.Urls.Add;
+using Shortify.Core.Urls.List;
 
 namespace Shortify.Infrastructure.Extensions;
 
@@ -21,6 +22,16 @@ public static class ServiceCollectionExtensions
                 configuration["DatabaseName"]!,
                 configuration["ContainerName"]!);
             return new CosmosDBUrlDataStore(container);
+        });
+        
+        services.AddSingleton<IUserUrlsReader>(s =>
+        {
+            var cosmosClient = s.GetRequiredService<CosmosClient>();
+            var container = cosmosClient.GetContainer(
+                configuration["ByUserDatabaseName"]!,
+                configuration["ByUserContainerName"]!);
+            
+            return new CosmosUserUrlsReader(container);
         });
         
         return services;

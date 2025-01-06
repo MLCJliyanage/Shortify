@@ -12,6 +12,7 @@ using Microsoft.Extensions.Options;
 using Shortify.Api;
 using Shortify.Core.Urls;
 using Shortify.Core.Urls.Add;
+using Shortify.Core.Urls.List;
 using Shortify.Libraries.Testing.Extensions;
 using Shortify.Tests.TestDoubles;
 
@@ -24,10 +25,16 @@ public class ApiFixture : WebApplicationFactory<IApiAssemblyMarker>
 		builder.ConfigureTestServices(
 			services =>
 			{
+				var inMemoryStore = new InMemoryUrlDataStore();
 				services.Remove<IUrlDataStore>();
 				services
 					.AddSingleton<IUrlDataStore>(
-						new InMemoryUrlDataStore());
+						inMemoryStore);
+				
+				services.Remove<IUserUrlsReader>();
+				services
+					.AddSingleton<IUserUrlsReader>(
+						inMemoryStore);
                 
 				services.Remove<ITokenRangeApiClient>();
 				services.AddSingleton<ITokenRangeApiClient, FakeTokenRangeApiClient>();

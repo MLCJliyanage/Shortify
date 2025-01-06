@@ -8,6 +8,7 @@ using Polly;
 using Shortify.Api;
 using Shortify.Api.Extensions;
 using Shortify.Core.Urls.Add;
+using Shortify.Core.Urls.List;
 using Shortify.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,6 +31,7 @@ builder.Services
 	.AddSingleton<IEnvironmentManager, EnvironmentManager>();
 builder.Services
 	.AddUrlFeature()
+	.AddListUrlsFeature()
 	.AddCosmosUrlDataStore(builder.Configuration);
 
 builder.Services.AddHttpClient("TokenRangeService",
@@ -94,8 +96,8 @@ app.MapPost("/api/urls", async (
 	HttpContext context,
 	CancellationToken cancellationToken) =>
 {
-	var email = context.User.FindFirstValue("preferred_username")
-		?? throw new AuthenticationException("Missing email address.");
+	var email = context.User.GetUserEmail();
+	
 	var requestedWithUser = request with
 	{
 		CreatedBy = email
@@ -109,6 +111,14 @@ app.MapPost("/api/urls", async (
 	}
 
 	return Results.Created($"/api/urls/{result.Value!.ShortUrl}", result.Value);
+});
+
+app.MapGet("/api/urls", async (HttpContext context, IUserUrlsReader reader, CancellationToken cancellationToken) =>
+{
+	var email = context.User.GetUserEmail();
+	
+	var urls = await reader.GetAsync(email, cancellationToken);
+	return urls;
 });
 
 app.Run();

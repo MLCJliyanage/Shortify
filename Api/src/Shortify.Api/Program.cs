@@ -3,6 +3,7 @@ using System.Security.Claims;
 using Azure.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web;
 using Polly;
 using Shortify.Api;
@@ -113,11 +114,14 @@ app.MapPost("/api/urls", async (
 	return Results.Created($"/api/urls/{result.Value!.ShortUrl}", result.Value);
 });
 
-app.MapGet("/api/urls", async (HttpContext context, IUserUrlsReader reader, CancellationToken cancellationToken) =>
+app.MapGet("/api/urls", async (HttpContext context,
+	ListUrlsHandler handler,
+	int? pageSize,
+	[FromQuery(Name = "continuation")]string? continuationToken,
+	CancellationToken cancellationToken) =>
 {
-	var email = context.User.GetUserEmail();
-	
-	var urls = await reader.GetAsync(email, cancellationToken);
+	var request = new ListUrlsRequest(context.User.GetUserEmail(), pageSize, continuationToken);
+	var urls = await handler.HandleAsync(request, cancellationToken);
 	return urls;
 });
 

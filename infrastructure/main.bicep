@@ -171,3 +171,11 @@ module redisCache 'modules/storage/redis-cache.bicep' = {
     keyVaultName: keyVaultName
   }
 }
+
+module staticWebApp 'modules/web/static-web-app.bicep' = {
+  name: 'staticWebAppDeployment'
+  params: {
+    name: 'web-app-${uniqueId}'
+    location: location
+  }
+}

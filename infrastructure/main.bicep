@@ -160,6 +160,10 @@ module entraApp 'modules/identity/entra-app.bicep' = {
   name: 'entraAppWeb'
   params: {
     applicationName: 'web-${uniqueId}'
+    spaRedirectUris: [
+      'http://localhost:3000/' // Not for PRD use
+      staticWebApp.outputs.url
+    ]
   }
 }
 

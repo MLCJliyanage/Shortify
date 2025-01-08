@@ -176,6 +176,6 @@ module staticWebApp 'modules/web/static-web-app.bicep' = {
   name: 'staticWebAppDeployment'
   params: {
     name: 'web-app-${uniqueId}'
-    location: location
+    location: 'eastasia'
   }
 }

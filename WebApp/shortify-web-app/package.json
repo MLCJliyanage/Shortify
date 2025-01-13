@@ -1,5 +1,5 @@
 {
-  "name": "urlshortener-web-app",
+  "name": "shortify-web-app",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

@@ -100,6 +100,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("AllowWebApp");
 app.UseAuthentication();
 app.UseAuthorization();
 

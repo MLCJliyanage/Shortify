@@ -21,47 +21,47 @@ function Home() {
     instance.logoutRedirect();
   };
 
-  //   const getToken = async () => {
-  //     const request = {
-  //       scopes: [`openid profile ${scope}`],
-  //       account: accounts[0],
-  //     };
-  //     const response = await instance.acquireTokenSilent(request);
-  //     return response.accessToken;
-  //   };
+  const getToken = async () => {
+    const request = {
+      scopes: [`openid profile ${scope}`],
+      account: accounts[0],
+    };
+    const response = await instance.acquireTokenSilent(request);
+    return response.accessToken;
+  };
 
-  //   const fetchUrls = async () => {
-  //     const token = await getToken();
-  //     const response = await axios.get(`${apiEndpoint}/api/urls`, {
-  //       headers: { Authorization: `Bearer ${token}` },
-  //       params: {
-  //         continuation: data.continuationToken,
-  //         pageSize: 5,
-  //       },
-  //     });
-  //     setData((prev) => ({
-  //       initialized: true,
-  //       urls: [...prev.urls, ...response.data.urls],
-  //       continuationToken: response.data.continuationToken,
-  //     }));
-  //   };
+  const fetchUrls = async () => {
+    const token = await getToken();
+    const response = await axios.get(`${apiEndpoint}/api/urls`, {
+      headers: { Authorization: `Bearer ${token}` },
+      params: {
+        continuation: data.continuationToken,
+        pageSize: 5,
+      },
+    });
+    setData((prev) => ({
+      initialized: true,
+      urls: [...prev.urls, ...response.data.urls],
+      continuationToken: response.data.continuationToken,
+    }));
+  };
 
-  //   const handleLoadMore = () => {
-  //     fetchUrls();
-  //   };
+  const handleLoadMore = () => {
+    fetchUrls();
+  };
 
-  //   const handleSubmit = async (longUrl) => {
-  //     const token = await getToken();
-  //     await axios.post(
-  //       `${apiEndpoint}/api/urls`,
-  //       { LongUrl: longUrl },
-  //       { headers: { Authorization: `Bearer ${token}` } }
-  //     );
-  //   };
+  const handleSubmit = async (longUrl) => {
+    const token = await getToken();
+    await axios.post(
+      `${apiEndpoint}/api/urls`,
+      { LongUrl: longUrl },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+  };
 
-  //   useEffect(() => {
-  //     if (!data.initialized) fetchUrls();
-  //   });
+  useEffect(() => {
+    if (!data.initialized) fetchUrls();
+  });
 
   return (
     <div className='container'>
@@ -69,12 +69,12 @@ function Home() {
       <div className='header'>
         <LogoutButton onLogout={handleLogout}></LogoutButton>
       </div>
-      {/* <UrlForm onSubmit={handleSubmit} />
-            <ListUrls
-                urls={data.urls}
-                continuationToken={data.continuationToken}
-                onLoadMore={handleLoadMore}
-            /> */}
+      <UrlForm onSubmit={handleSubmit} />
+      <ListUrls
+        urls={data.urls}
+        continuationToken={data.continuationToken}
+        onLoadMore={handleLoadMore}
+      />
     </div>
   );
 }

@@ -50,6 +50,10 @@ module apiService 'modules/compute/appservice.bicep' = {
         name: 'AzureAd__Scopes'
         value: 'Urls.Read'
       }
+      {
+        name: 'WebAppEndpoints'
+        value: '${staticWebApp.outputs.url},http://localhost:3000'
+      }
     ]
   }
 }

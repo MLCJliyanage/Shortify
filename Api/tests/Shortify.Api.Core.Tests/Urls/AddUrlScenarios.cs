@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Time.Testing;
 using Shortify.Api.Core.Tests.TestDoubles;
 using Shortify.Core;
+using Shortify.Core.Urls;
 using Shortify.Core.Urls.Add;
 
 namespace Shortify.Api.Core.Tests.Urls;
@@ -17,7 +18,7 @@ public class AddUrlScenarios
 		tokenProvider.AssignRange(1, 5);
 		var shortUrlGenerator = new ShortUrlGenerator(tokenProvider);
 		_timeProvider = new FakeTimeProvider();
-		_handler = new AddUrlHandler(shortUrlGenerator, _urlDataStore, _timeProvider);
+		_handler = new AddUrlHandler( new RedirectLinkBuilder(new Uri("https://tests/")), shortUrlGenerator, _urlDataStore, _timeProvider);
 	}
 
 	[Fact]
@@ -26,8 +27,9 @@ public class AddUrlScenarios
 		var request = CreateAddUrlRequest();
 		var response = await _handler.HandleAsync(request, default);
 
-		response.Value!.ShortUrl.Should().NotBeEmpty();
-		response.Value!.ShortUrl.Should().Be("1");
+		response.Succeeded.Should().BeTrue();
+		response.Value!.Id.Should().NotBeEmpty();
+		response.Value!.Id.Should().Be("1");
 	}
 
 	[Fact]
@@ -36,7 +38,7 @@ public class AddUrlScenarios
 		var request = CreateAddUrlRequest();
 		var response = await _handler.HandleAsync(request, default);
 
-		_urlDataStore.Should().ContainKey(response.Value!.ShortUrl);
+		_urlDataStore.Should().ContainKey(response.Value!.Id);
 	}
 
 	[Fact]
@@ -46,9 +48,9 @@ public class AddUrlScenarios
 		var response = await _handler.HandleAsync(request, default);
 
 		response.Succeeded.Should().BeTrue();
-		_urlDataStore.Should().ContainKey(response.Value!.ShortUrl);
-		_urlDataStore[response.Value!.ShortUrl].CreatedBy.Should().Be(request.CreatedBy);
-		_urlDataStore[response.Value!.ShortUrl].CreatedOn.Should().Be(_timeProvider.GetUtcNow());
+		_urlDataStore.Should().ContainKey(response.Value!.Id);
+		_urlDataStore[response.Value!.Id].CreatedBy.Should().Be(request.CreatedBy);
+		_urlDataStore[response.Value!.Id].CreatedOn.Should().Be(_timeProvider.GetUtcNow());
 	}
 
 	[Fact]

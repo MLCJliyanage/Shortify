@@ -20,6 +20,10 @@ namespace Shortify.Api.Core.Tests.Urls;
 
 public class ApiFixture : WebApplicationFactory<IApiAssemblyMarker>
 {
+	public ApiFixture()
+	{
+		Environment.SetEnvironmentVariable("RedirectService__Endpoint", "https://urlshortener.tests/r/");
+	}
 	protected override void ConfigureWebHost(IWebHostBuilder builder)
 	{
 		builder.ConfigureTestServices(

@@ -8,6 +8,7 @@ using Microsoft.Identity.Web;
 using Polly;
 using Shortify.Api;
 using Shortify.Api.Extensions;
+using Shortify.Core.Urls;
 using Shortify.Core.Urls.Add;
 using Shortify.Core.Urls.List;
 using Shortify.Infrastructure.Extensions;
@@ -34,6 +35,10 @@ builder.Services
 	.AddUrlFeature()
 	.AddListUrlsFeature()
 	.AddCosmosUrlDataStore(builder.Configuration);
+
+builder.Services.AddSingleton(
+	new RedirectLinkBuilder(
+		new Uri(builder.Configuration["RedirectService:Endpoint"]!)));
 
 builder.Services.AddHttpClient("TokenRangeService",
 	client =>

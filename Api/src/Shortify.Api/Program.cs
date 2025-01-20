@@ -1,9 +1,13 @@
 using System.Security.Authentication;
 using System.Security.Claims;
 using Azure.Identity;
+using HealthChecks.CosmosDb;
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Identity.Web;
 using Polly;
 using Shortify.Api;
@@ -12,6 +16,7 @@ using Shortify.Core.Urls;
 using Shortify.Core.Urls.Add;
 using Shortify.Core.Urls.List;
 using Shortify.Infrastructure.Extensions;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +28,15 @@ if (!string.IsNullOrEmpty(keyVaultName))
 		new DefaultAzureCredential()
 	);
 }
+
+builder.Services.AddHealthChecks()
+	.AddAzureCosmosDB(optionsFactory: _ => new AzureCosmosDbHealthCheckOptions()
+	{
+		DatabaseId = builder.Configuration["DatabaseName"]!
+	})
+	.AddRedis(provider => 
+		provider.GetRequiredService<IConnectionMultiplexer>(),
+		failureStatus: HealthStatus.Degraded);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -97,6 +111,11 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+app.MapHealthChecks("/healthz", new HealthCheckOptions()
+{
+	ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -147,3 +166,4 @@ app.MapGet("/api/urls", async (HttpContext context,
 });
 
 app.Run();
+

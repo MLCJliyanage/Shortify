@@ -30,12 +30,13 @@ if (!string.IsNullOrEmpty(keyVaultName))
 }
 
 builder.Services.AddHealthChecks()
-	.AddCosmosHealthCheck(builder.Configuration)
-	.AddUrlGroup(
-		new Uri(
-			new Uri(builder.Configuration["TokenRangeService:Endpoint"]!),
-			"healthz"),
-		name: "token-range-service");
+	.AddAzureCosmosDB(optionsFactory: _ => new AzureCosmosDbHealthCheckOptions()
+	{
+		DatabaseId = builder.Configuration["DatabaseName"]!
+	})
+	.AddRedis(provider => 
+		provider.GetRequiredService<IConnectionMultiplexer>(),
+		failureStatus: HealthStatus.Degraded);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -110,8 +111,10 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-app.MapHealthChecks("/healthz")
-	.AllowAnonymous();
+app.MapHealthChecks("/healthz", new HealthCheckOptions()
+{
+	ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -12,9 +12,6 @@ if (!string.IsNullOrEmpty(keyVaultName))
     );
 }
 
-builder.Services.AddHealthChecks()
-    .AddNpgSql(builder.Configuration["Postgres:ConnectionString"]!);
-
 builder.Services.AddSingleton(
     new TokenRangeManager(builder.Configuration["Postgres:ConnectionString"]!));
 
@@ -22,7 +19,6 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 
-app.MapHealthChecks("/healthz");
 
 app.MapGet("/", () =>"TokenRanges Service");
 app.MapPost("/assign", async (AssignTokenRangeRequest request, TokenRangeManager manager) =>

@@ -1,5 +1,4 @@
 using Azure.Identity;
-using HealthChecks.CosmosDb;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Functions.Worker.Builder;
 using Microsoft.Extensions.Configuration;
@@ -23,24 +22,16 @@ builder.ConfigureFunctionsWebApplication();
 //     .AddApplicationInsightsTelemetryWorkerService()
 //     .ConfigureFunctionsApplicationInsights();
 
-builder.Services.AddSingleton<CosmosClient>(s =>
-    new CosmosClient(
-        connectionString: builder.Configuration["CosmosDb:ConnectionString"]
-    ));
-
 builder.Services.AddSingleton<Container>(s =>
 {
-    var client = s.GetRequiredService<CosmosClient>();
+    var client = new CosmosClient(
+        connectionString: builder.Configuration["CosmosDb:ConnectionString"]
+    );
     return client.GetContainer(
         builder.Configuration["TargetDatabaseName"], 
         builder.Configuration["TargetContainerName"]);
 });
 
-builder.Services.AddHealthChecks()
-    .AddAzureCosmosDB(optionsFactory: _ => new AzureCosmosDbHealthCheckOptions()
-    {
-        DatabaseId = builder.Configuration["TargetDatabaseName"]!
-    });
 
 
 builder.Build().Run();

@@ -5,6 +5,16 @@ param keyVaultName string
 @secure()
 param storageAccountConnectionString string
 param appSettings array = []
+param logAnalyticsWorkspaceId string
+
+module appInsights '../telemetry/app-insights.bicep' = {
+  name: '${name}AppInsightsDeployment'
+  params: {
+    name: 'app-insights-${name}'
+    location: location
+    logAnalyticsWorkspaceId: logAnalyticsWorkspaceId
+  }
+}
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2023-12-01' = {
   name: appServicePlanName
@@ -60,6 +70,14 @@ resource function 'Microsoft.Web/sites@2023-12-01' = {
           {
             name: 'WEBSITE_RUN_FROM_PACKAGE'
             value: '1'
+          }
+          {
+            name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
+            value: appInsights.outputs.instrumentationKey
+          }
+          {
+            name: 'APPINSIGHTS_CONNECTIONSTRING'
+            value: appInsights.outputs.connectionString
           }
         ],
         appSettings

@@ -1,6 +1,7 @@
 using System.Security.Authentication;
 using System.Security.Claims;
 using Azure.Identity;
+using Azure.Monitor.OpenTelemetry.AspNetCore;
 using HealthChecks.CosmosDb;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -108,6 +109,10 @@ builder.Services.AddCors(options =>
 			.AllowAnyHeader();
 	});
 });
+
+builder.Services
+	.AddOpenTelemetry()
+	.UseAzureMonitor();
 
 var app = builder.Build();
 
